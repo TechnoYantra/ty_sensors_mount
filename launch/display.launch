@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+	<arg default="$(find ty_sensor_mount)/urdf/ty_sensor_mount.xacro" name="model"/>
+	<arg default="true" name="gui"/>
+	<arg default="$(find ty_sensor_mount)/config/urdf.rviz" name="rvizconfig"/>
+
+	<param command="$(find xacro)/xacro $(arg model)" name="robot_description"/>
+	<param name="use_gui" value="$(arg gui)"/>
+
+	<node args="-d $(arg rvizconfig)" name="rviz" pkg="rviz" required="true" type="rviz"/>
+
+</launch>

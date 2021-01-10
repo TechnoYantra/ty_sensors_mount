@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+
+<robot name="ty_sensor_mount" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find ty_sensor_mount)/urdf/materials.xacro" />
+<xacro:include filename="$(find ty_sensor_mount)/gazebo/ty_sensor_mount_materials.gazebo" />
+<xacro:include filename="$(find ty_sensor_mount)/gazebo/ty_sensor_mount_physics.gazebo" />
+<xacro:include filename="$(find ty_sensor_mount)/gazebo/ty_sensor_mount_plugins.gazebo" />
+
+<xacro:include filename="$(find realsense_ros_gazebo)/xacro/tracker.xacro"/>
+<xacro:include filename="$(find realsense_ros_gazebo)/xacro/depthcam.xacro"/>
+
+<xacro:macro name="ty_sensor" params="name:=ty_sensor parent *origin">
+
+
+<link name="sensor_mount_base">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.019342452680712944 -0.00012734703270061152 0.07264299308898177"/>
+    <mass value="0.3658869525840129"/>
+    <inertia ixx="0.001087" ixy="0.0" ixz="-2e-06" iyy="0.001038" iyz="4e-06" izz="0.000245"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://ty_sensor_mount/meshes/sensor_mount_base.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="ty_color"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://ty_sensor_mount/meshes/sensor_mount_base.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="lidar_base">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.033302219550403744 0.02012364213132545 0.030311252946342793"/>
+    <mass value="0.14865741807631863"/>
+    <inertia ixx="5.9e-05" ixy="-0.0" ixz="-1.6e-05" iyy="0.000106" iyz="0.0" izz="0.000129"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.062 0.02 -0.1524"/>
+    <geometry>
+      <mesh filename="package://ty_sensor_mount/meshes/lidar_base.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="ty_color"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.062 0.02 -0.1524"/>
+    <geometry>
+      <mesh filename="package://ty_sensor_mount/meshes/lidar_base.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="lidar">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-1.2202284445025913e-07 -1.9200961063340156e-05 0.004936513401047393"/>
+    <mass value="0.04242691408276986"/>
+    <inertia ixx="1.3e-05" ixy="-0.0" ixz="0.0" iyy="1.3e-05" iyz="0.0" izz="2.6e-05"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.02 -0.0 -0.2001"/>
+    <geometry>
+      <mesh filename="package://ty_sensor_mount/meshes/lidar.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="ty_color"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.02 -0.0 -0.2001"/>
+    <geometry>
+      <mesh filename="package://ty_sensor_mount/meshes/lidar.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<!--#####################  REALSENSE  ##########################-->
+
+<xacro:realsense_T265 sensor_name="camera" parent_link="sensor_mount_base" rate="30.0">
+  <origin rpy="0 0 0" xyz="0.00625 0 0.0875"/>
+</xacro:realsense_T265>
+
+<xacro:realsense_d435 sensor_name="d435" parent_link="sensor_mount_base" rate="10">
+  <origin rpy="0 0 0" xyz="-0.0025 0 0.1125"/>
+</xacro:realsense_d435>
+
+<!--#####################  JOINTS  ##########################-->
+
+<!--
+<joint name="world_joint" type="fixed">
+  <origin rpy="0 0 0" xyz="0.02 0 0"/>
+  <parent link="world"/>
+  <child link="sensor_mount_base"/>
+</joint>
+-->
+<joint name="${name}_joint" type="fixed">
+  <xacro:insert_block name="origin" />
+  <parent link="${parent}"/>
+  <child link="sensor_mount_base" />
+</joint>
+
+<joint name="Rigid1" type="fixed">
+  <origin rpy="0 0 0" xyz="-0.062 -0.02 0.1524"/>
+  <parent link="sensor_mount_base"/>
+  <child link="lidar_base"/>
+</joint>
+
+<joint name="Rigid2" type="fixed">
+  <origin rpy="0 0 0" xyz="0.042 0.02 0.0477"/>
+  <parent link="lidar_base"/>
+  <child link="lidar"/>
+</joint>
+
+</xacro:macro>
+
+</robot>
