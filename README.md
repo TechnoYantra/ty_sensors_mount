@@ -82,8 +82,7 @@ This will start the RViz and load a config file that will help you visualize rea
 
 ### On your own Robot -
 
+You can attach this mount to your robot and link the base_link of this mount to the base_link of your robot by publishing the appropriate Static TF.
+
+### ROS 2
 Coming Soon...
-
-## To Do:
-Add images in README
-
