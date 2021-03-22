@@ -40,7 +40,7 @@ cd colcon_ws/src
 and then run the following command
 
 ```
-git clone https://github.com/TechnoYantra/ty_sensors_mount
+git clone https://github.com/TechnoYantra/ty_sensors_mount -b ros2
 ```
 
 Please run `colcon build --symlink-install` from your workspace directory before proceeding.
@@ -63,7 +63,7 @@ export GAZEBO_MODEL_PATH=~<pwd>/src/:$GAZEBO_MODEL_PATH
 - Launch Gazebo with Ty Sensor Mount
 
 ```
-ros2 launch ty_sensor_mount gazebo.launch.py
+ros2 launch ty_sensors_mount gazebo.launch.py
 ```
 - Note Remember to change `Reliability Policy` to `Best Effort`
 
@@ -78,7 +78,7 @@ You can also add few objects in the Simulation from Gazebo Models to test the se
 To visualize the data from the sensors, run the following command in another terminal making sure that the simulation is runnning in background.
 
 ```
-ros2 launch ty_sensor_mount display.launch.py
+ros2 launch ty_sensors_mount display.launch.py
 ```
 
 ## Result

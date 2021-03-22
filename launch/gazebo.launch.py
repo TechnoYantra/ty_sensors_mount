@@ -15,18 +15,18 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='True')
 
-    ty_sensor_mount = get_package_share_directory('ty_sensor_mount')
+    ty_sensors_mount = get_package_share_directory('ty_sensors_mount')
 
     return LaunchDescription([
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(ty_sensor_mount, 'launch', 'empty_world.launch.py')
+                os.path.join(ty_sensors_mount, 'launch', 'empty_world.launch.py')
             ),
         ),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(ty_sensor_mount, 'launch', 'spawn_entity.launch.py')
+                os.path.join(ty_sensors_mount, 'launch', 'spawn_entity.launch.py')
             ),
         ),
 

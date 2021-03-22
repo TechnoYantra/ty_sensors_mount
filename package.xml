@@ -3,7 +3,7 @@
 <package format="3">
   <name>ty_sensors_mount</name>
   <version>0.0.0</version>
-  <description>The ty_sensor_mount package</description>
+  <description>The ty_sensors_mount package</description>
   <maintainer email="sachinkum123567@gmail.com">Sachin Kumar</maintainer>
   <license>MIT</license>
   

@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
-<robot name="ty_sensor_mount" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="ty_sensors_mount" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="deg_to_rad" value="0.01745329251994329577" />
-  <xacro:include filename="$(find ty_sensor_mount)/urdf/materials.xacro" />
-  <xacro:include filename="$(find ty_sensor_mount)/gazebo/ty_sensor_mount_materials.gazebo" />
-  <xacro:include filename="$(find ty_sensor_mount)/gazebo/ty_sensor_mount_physics.gazebo" />
-  <xacro:include filename="$(find ty_sensor_mount)/gazebo/ty_sensor_mount_plugins.gazebo" />
-  <xacro:include filename="$(find ty_sensor_mount)/urdf/tracker.urdf.xacro" />
+  <xacro:include filename="$(find ty_sensors_mount)/urdf/materials.xacro" />
+  <xacro:include filename="$(find ty_sensors_mount)/gazebo/ty_sensors_mount_materials.gazebo" />
+  <xacro:include filename="$(find ty_sensors_mount)/gazebo/ty_sensors_mount_physics.gazebo" />
+  <xacro:include filename="$(find ty_sensors_mount)/gazebo/ty_sensors_mount_plugins.gazebo" />
+  <xacro:include filename="$(find ty_sensors_mount)/urdf/tracker.urdf.xacro" />
   
 
   <xacro:macro name="ty_sensor" params="name:=ty_sensor parent *origin">
@@ -23,14 +23,14 @@
       <visual>
         <origin rpy="0 0 0" xyz="0 0 0" />
         <geometry>
-          <mesh filename="package://ty_sensor_mount/meshes/sensor_mount_base.stl" scale="0.001 0.001 0.001" />
+          <mesh filename="package://ty_sensors_mount/meshes/sensor_mount_base.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="ty_color" />
       </visual>
       <collision>
         <origin rpy="0 0 0" xyz="0 0 0" />
         <geometry>
-          <mesh filename="package://ty_sensor_mount/meshes/sensor_mount_base.stl" scale="0.001 0.001 0.001" />
+          <mesh filename="package://ty_sensors_mount/meshes/sensor_mount_base.stl" scale="0.001 0.001 0.001" />
         </geometry>
       </collision>
     </link>
@@ -44,14 +44,14 @@
       <visual>
         <origin rpy="0 0 0" xyz="0.062 0.02 -0.1524" />
         <geometry>
-          <mesh filename="package://ty_sensor_mount/meshes/lidar_base.stl" scale="0.001 0.001 0.001" />
+          <mesh filename="package://ty_sensors_mount/meshes/lidar_base.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="ty_color" />
       </visual>
       <collision>
         <origin rpy="0 0 0" xyz="0.062 0.02 -0.1524" />
         <geometry>
-          <mesh filename="package://ty_sensor_mount/meshes/lidar_base.stl" scale="0.001 0.001 0.001" />
+          <mesh filename="package://ty_sensors_mount/meshes/lidar_base.stl" scale="0.001 0.001 0.001" />
         </geometry>
       </collision>
     </link>
@@ -65,14 +65,14 @@
       <visual>
         <origin rpy="0 0 0" xyz="0.02 -0.0 -0.2001" />
         <geometry>
-          <mesh filename="package://ty_sensor_mount/meshes/lidar.stl" scale="0.001 0.001 0.001" />
+          <mesh filename="package://ty_sensors_mount/meshes/lidar.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="ty_color" />
       </visual>
       <collision>
         <origin rpy="0 0 0" xyz="0.02 -0.0 -0.2001" />
         <geometry>
-          <mesh filename="package://ty_sensor_mount/meshes/lidar.stl" scale="0.001 0.001 0.001" />
+          <mesh filename="package://ty_sensors_mount/meshes/lidar.stl" scale="0.001 0.001 0.001" />
         </geometry>
       </collision>
     </link>

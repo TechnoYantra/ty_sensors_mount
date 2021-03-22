@@ -15,13 +15,13 @@ def generate_launch_description():
 
     rviz_dir = LaunchConfiguration(
             'rviz_dir',
-            default=os.path.join(get_package_share_directory('ty_sensor_mount'), 'launch'))
+            default=os.path.join(get_package_share_directory('ty_sensors_mount'), 'launch'))
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-    urdf_file_name = 'ty_sensor_mount2.urdf'
+    urdf_file_name = 'ty_sensors_mount2.urdf'
 
     urdf = os.path.join(
-            get_package_share_directory('ty_sensor_mount'),'urdf',urdf_file_name)
+            get_package_share_directory('ty_sensors_mount'),'urdf',urdf_file_name)
 
     return LaunchDescription([
         LogInfo(msg=['Execte My Robot Fake Node!!']),

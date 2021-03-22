@@ -25,7 +25,7 @@
       <visual>
         <origin xyz="0.0 0 0.1" rpy="1.57 0 1.57"/>
         <geometry>
-          <mesh filename="package://ty_sensor_mount/meshes/realsense_t265.stl" scale="0.001 0.001 0.001"  />
+          <mesh filename="package://ty_sensors_mount/meshes/realsense_t265.stl" scale="0.001 0.001 0.001"  />
         </geometry>
         <material name="Grey">
           <color rgba="0.5 0.5 0.5 1"/>

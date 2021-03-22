@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<robot name="ty_sensor_mount" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="ty_sensors_mount" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
   <xacro:property name="body_color" value="Gazebo/White"/>
   <xacro:property name="black_color" value="Gazebo/Black"/>
