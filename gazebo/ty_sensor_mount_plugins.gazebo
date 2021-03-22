@@ -2,49 +2,48 @@
 
 <robot name="ty_sensor_mount" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-  <!--#####################  ROS CONTROL ##########################-->
-
-  <gazebo>
-    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
-      <robotNamespace>/ty_sensor_mount</robotNamespace>
-      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
-    </plugin>
-  </gazebo>
 
   <!--#####################  LIDAR ##########################-->
 
-  <gazebo reference="lidar">
-    <sensor type="ray" name="lidar_rays">
-      <pose>0 0 0 0 0 0</pose>
-      <visualize>False</visualize>
-      <update_rate>10</update_rate>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>720</samples>
-            <resolution>1</resolution>
-            <min_angle>-3.14159</min_angle>
-            <max_angle>3.14159</max_angle>
-          </horizontal>
-        </scan>
-        <range>
-          <min>0.05</min>
-          <max>20.0</max>
-          <resolution>0.01</resolution>
-        </range>
-        <noise>
-          <type>gaussian</type>
-          <mean>0.0</mean>
-          <stddev>0.01</stddev>
-        </noise>
-      </ray>
-      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/laser</topicName>
-        <frameName>lidar</frameName>
-      </plugin>
-    </sensor>
-  </gazebo>
+
+
+	<gazebo reference="lidar">
+		<sensor name="lidar_rays" type="ray">
+			<always_on>true</always_on>
+			<visualize>false</visualize>
+			<pose>0 0 0 0 0 0</pose>
+			<update_rate>10</update_rate>
+			<ray>
+			  <scan>
+				<horizontal>
+				  <samples>720</samples>
+				  <resolution>1</resolution>
+				  <min_angle>-3.14159</min_angle>
+				  <max_angle>3.14159</max_angle>
+				</horizontal>
+			  </scan>
+			  <range>
+				<min>0.05</min>
+				<max>20</max>
+				<resolution>0.01</resolution>
+			  </range>
+			  <noise>
+				<type>gaussian</type>
+				<mean>0.0</mean>
+				<stddev>0.01</stddev>
+			  </noise>
+			</ray>
+			<plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_ray_sensor.so">
+			  <ros>
+				<!-- <namespace>/tb3</namespace> -->
+				<remapping>~/out:=laser</remapping>
+			  </ros>
+			  <output_type>sensor_msgs/LaserScan</output_type>
+			  <frame_name>lidar</frame_name>
+			</plugin>
+		  </sensor>
+	</gazebo>
+	
 
 
 </robot>

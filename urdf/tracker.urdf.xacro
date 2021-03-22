@@ -1,0 +1,298 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <!-- Macro -->
+  <xacro:macro name="realsense" params="name parent camera_model rate *origin *optical_origin">
+
+    <!-- frames in the center of the camera -->
+    <joint name="${name}_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}_link"/>
+      <child link="${name}_link"/>
+    </joint>
+
+    <link name="${name}_link">
+      <inertial>
+        <origin xyz="-0.00936000000 -0.00003000000 -0.00273000000" rpy="0 0 0"/>
+        <mass value="0.0021970000000"/>
+        <inertia ixx="0.00000429247" ixy="0.00000000000" ixz="0.00000002565"
+                 iyy="0.00000008027" iyz="0.00000000000"
+                 izz="0.00000427339"/>
+      </inertial>
+      
+      <visual>
+        <origin xyz="0.0 0 0.1" rpy="1.57 0 1.57"/>
+        <geometry>
+          <mesh filename="package://ty_sensor_mount/meshes/realsense_t265.stl" scale="0.001 0.001 0.001"  />
+        </geometry>
+        <material name="Grey">
+          <color rgba="0.5 0.5 0.5 1"/>
+        </material>
+      </visual>
+      <!-- <collision>
+        <origin xyz="-0.01 0.0025 0" rpy="1.57 0 1.57"/>
+        <geometry>
+          <box size="0.04 0.185 0.03"/>
+        </geometry>
+      </collision> -->
+     
+    </link>
+
+    <joint name="${name}_optical_joint" type="fixed">
+      <xacro:insert_block name="optical_origin" />
+      <parent link="${name}_link"/>
+      <child link="${name}_optical_frame"/>
+    </joint>
+
+    <link name="${name}_optical_frame">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0"
+                 iyy="0.00001" iyz="0"
+                 izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- frames of the depth sensor -->
+    <joint name="${name}_depth_joint" type="fixed">
+      <!-- <xacro:camera_baseline_constants camera_model="${camera_model}" /> -->
+      <parent link="${name}_link" />
+      <child link="${name}_depth_frame"/>
+    </joint>
+
+    <link name="${name}_depth_frame">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0"
+                 iyy="0.00001" iyz="0"
+                 izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_depth_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-90.0 * deg_to_rad} 0.0 ${-90.0 * deg_to_rad}" />
+      <parent link="${name}_depth_frame" />
+      <child link="${name}_depth_optical_frame"/>
+    </joint>
+
+    <link name="${name}_depth_optical_frame">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0"
+                 iyy="0.00001" iyz="0"
+                 izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <!-- frames of the rgb sensor -->
+    <joint name="${name}_rgb_joint" type="fixed">
+      <origin xyz="0.0 0.022 0.1" rpy="0 0 0" />
+      <parent link="${name}_link" />
+      <child link="${name}_rgb_frame"/>
+    </joint>
+
+    <link name="${name}_rgb_frame">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0"
+                 iyy="0.00001" iyz="0"
+                 izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_rgb_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-90.0 * deg_to_rad} 0.0 ${-90.0 * deg_to_rad}" />
+      <parent link="${name}_rgb_frame" />
+      <child link="${name}_rgb_optical_frame"/>
+    </joint>
+
+    <link name="${name}_rgb_optical_frame">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0"
+                 iyy="0.00001" iyz="0"
+                 izz="0.00001"/>
+      </inertial>
+    </link>
+
+
+    <gazebo reference="${name}_rgb_frame">
+    <sensor name="camera_rgb" type="camera">
+        <update_rate>${rate}</update_rate>
+        <visualize>true</visualize>
+        <camera name="head">
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+         
+          <ros>
+            <remapping>image_raw:=${name}/rgb/image_raw</remapping>
+            <remapping>camera_info:=${name}/rgb/camera_info</remapping>
+          </ros>
+
+          
+        </plugin>
+      </sensor>
+    <sensor name="camera" type="depth">
+      <update_rate>${rate}</update_rate>
+      <visualize>true</visualize>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_controller">
+         <ros>
+          <namespace>${name}</namespace>
+          <remapping>camera/image_depth:=camera/image_depth</remapping>
+          <remapping>camera/camera_info:=camera/camera_info</remapping>
+          <remapping>camera/camera_info_depth:=camera/camera_info_depth</remapping>
+          <remapping>camera/points:=points</remapping>
+        </ros>
+        <!-- Set camera name. If empty, defaults to sensor name (i.e. "sensor_name") -->
+        <!-- <camera_name>custom_camera</camera_name> -->
+        <!-- Set TF frame name. If empty, defaults to link name (i.e. "link_name") -->
+        <frame_name>${name}_rgb_optical_frame</frame_name>
+        <hack_baseline>0.07</hack_baseline>
+        <min_depth>0.001</min_depth>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
+    <joint name="${name}_gyro_joint" type="fixed">
+      <parent link="${name}_link" />
+      <child link="${name}_gyro_frame" />
+      <origin rpy="0 0 0" xyz="0 0 0" /> <!-- check on real hw -->
+    </joint>
+    <link name="${name}_gyro_frame" />
+
+    <gazebo reference="${name}_gyro_frame">
+      <gravity>true</gravity>
+      <sensor name="${name}_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>${rate}</update_rate>
+        <imu>
+          <angular_velocity>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+        <!-- <visualize>false</visualize> -->
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <!-- <topicName>${sensor_name}/gyro/sample</topicName> -->
+          <bodyName>${name}_pose_frame</bodyName>
+          <updateRateHZ>${rate}</updateRateHZ>
+          <gaussianNoise>0.000001</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>${name}_link</frameName>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
+          <ros>
+            <!-- <namespace>/tb3</namespace> -->
+            <remapping>~/out:=${name}/gyro/sample</remapping>
+          </ros>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <joint name="${name}_accel_joint" type="fixed">
+      <parent link="${name}_link" />
+      <child link="${name}_accel_frame" />
+      <origin rpy="0 0 0" xyz="0 0 0" /> <!-- check on real hw -->
+    </joint>
+    <link name="${name}_accel_frame" /> <!-- dummy -->
+
+    <gazebo>
+      <!-- odometry -->
+      <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+       
+        <ros>
+          <!-- Add namespace and remap the default topic -->
+          <namespace>/</namespace>
+          <remapping>odom:=${name}/odom/sample</remapping>
+        </ros>
+
+        <!-- Replace camelCase elements with camel_case ones -->
+        <body_name>base_link</body_name>
+        <frame_name>world</frame_name>
+        <update_rate>1</update_rate>
+        <xyz_offset>0 0 00</xyz_offset>
+        <rpy_offset>0.1 0.1 0.1</rpy_offset>
+        <gaussian_noise>0.01</gaussian_noise>
+      </plugin>
+    </gazebo>
+
+
+  </xacro:macro>
+
+</robot>
